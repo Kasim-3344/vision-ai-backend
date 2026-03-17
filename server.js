@@ -33,7 +33,7 @@ const upload = multer({ storage });
 
 // Root route for Render/browser check
 app.get('/', (req, res) => {
-  res.send('Vision AI backend is running');
+  res.send('ROOT ROUTE WORKING 12345');
 });
 
 app.post('/api/process-room', upload.single('roomImage'), (req, res) => {
