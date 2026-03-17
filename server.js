@@ -11,6 +11,8 @@ const PORT = process.env.PORT || 5000;
 const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:5173';
 const BASE_URL = process.env.RENDER_EXTERNAL_URL || `http://localhost:${PORT}`;
 
+console.log('NEW SERVER FILE LOADED - ROOT ROUTE ENABLED');
+
 // CORS
 app.use(cors({
   origin: FRONTEND_URL,
