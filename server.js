@@ -14,8 +14,27 @@ const BASE_URL = process.env.RENDER_EXTERNAL_URL || `http://localhost:${PORT}`;
 console.log('NEW SERVER FILE LOADED - ROOT ROUTE ENABLED');
 
 // CORS
+const allowedOrigins = [
+  FRONTEND_URL,
+  'https://wonderfloor-oh1o.vercel.app',
+];
+
 app.use(cors({
-  origin: FRONTEND_URL,
+  origin: function (origin, callback) {
+    if (!origin) return callback(null, true);
+
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+
+    return callback(new Error(`Not allowed by CORS: ${origin}`));
+  },
+  methods: ['GET', 'POST', 'OPTIONS'],
+}));
+
+app.options('/api/process-room', cors({
+  origin: allowedOrigins,
+  methods: ['GET', 'POST', 'OPTIONS'],
 }));
 
 // Upload folder
