@@ -8,7 +8,9 @@ const { spawn } = require('child_process');
 const app = express();
 
 // Ensure this matches your Vite port exactly
-app.use(cors({ origin: 'http://localhost:5173' }));
+app.use(cors({
+  origin: process.env.FRONTEND_URL || '*',
+}));
 
 // --- CRITICAL FIX 1: Use path.resolve to find the folder regardless of where you run the script ---
 const uploadDir = path.resolve(__dirname, 'uploads');
@@ -46,7 +48,8 @@ app.post('/api/process-room', upload.single('roomImage'), (req, res) => {
             const rawFilename = path.basename(lines[lines.length - 1].trim());
             
             // This is the relative path Express needs
-            const finalUrl = `http://localhost:5000/uploads/${rawFilename}`;
+            const BASE_URL = process.env.RENDER_EXTERNAL_URL || `http://localhost:${process.env.PORT || 5000}`;
+const finalUrl = `${BASE_URL}/uploads/${rawFilename}`;
 
             console.log(`✅ Python finished. Checking for file: ${rawFilename}`);
 
@@ -71,4 +74,5 @@ app.post('/api/process-room', upload.single('roomImage'), (req, res) => {
     });
 });
 
-app.listen(5000, () => console.log(`🚀 Server running on http://localhost:5000`));
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
